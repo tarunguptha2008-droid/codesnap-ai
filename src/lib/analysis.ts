@@ -90,15 +90,15 @@ export function fileToBase64(file: File): Promise<{ dataUrl: string; base64: str
 }
 
 const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
-const MAX_SIZE = 10 * 1024 * 1024;
 
-export function validateImageFile(file: File): string | null {
+export function validateImageFile(file: File, maxFileSizeMB: number = 10): string | null {
   const normalizedType = file.type.toLowerCase().replace("image/jpg", "image/jpeg");
   if (!ACCEPTED_TYPES.includes(normalizedType)) {
     return "Unsupported file type. Please upload a PNG, JPG, or WEBP image.";
   }
-  if (file.size > MAX_SIZE) {
-    return `File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum size is 10 MB.`;
+  const maxBytes = maxFileSizeMB * 1024 * 1024;
+  if (file.size > maxBytes) {
+    return `File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum size is ${maxFileSizeMB} MB.`;
   }
   return null;
 }

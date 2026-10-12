@@ -1,6 +1,10 @@
 import { Loader2 } from "lucide-react";
 
-export function LoadingIndicator() {
+interface LoadingIndicatorProps {
+  mode: "online" | "offline";
+}
+
+export function LoadingIndicator({ mode }: LoadingIndicatorProps) {
   return (
     <div
       className="flex flex-col items-center justify-center gap-4 py-16 px-4"
@@ -16,7 +20,9 @@ export function LoadingIndicator() {
       <div className="text-center">
         <p className="text-white font-semibold text-lg">Analyzing your screenshot</p>
         <p className="text-slate-400 text-sm mt-1">
-          Gemma 4 is reading the error and preparing your explanation…
+          {mode === "offline"
+            ? "Local Ollama model is reading the error and preparing your explanation…"
+            : "Gemma 4 is reading the error and preparing your explanation…"}
         </p>
       </div>
     </div>

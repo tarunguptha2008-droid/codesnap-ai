@@ -13,6 +13,7 @@ interface UploadAreaProps {
   onAnalyze: () => void;
   isLoading: boolean;
   disabled: boolean;
+  maxFileSizeMB: number;
 }
 
 export function UploadArea({
@@ -25,6 +26,7 @@ export function UploadArea({
   onAnalyze,
   isLoading,
   disabled,
+  maxFileSizeMB,
 }: UploadAreaProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -32,7 +34,7 @@ export function UploadArea({
 
   const handleFile = useCallback(
     async (file: File) => {
-      const validationError = validateImageFile(file);
+      const validationError = validateImageFile(file, maxFileSizeMB);
       if (validationError) {
         setError(validationError);
         return;
@@ -129,7 +131,7 @@ export function UploadArea({
               {isDragging ? "Drop your screenshot here" : "Drag & drop your screenshot"}
             </p>
             <p className="text-slate-400 text-sm mt-1">
-              or click to browse — PNG, JPG, JPEG, WEBP up to 10 MB
+              or click to browse — PNG, JPG, JPEG, WEBP up to {maxFileSizeMB} MB
             </p>
           </div>
           <input
